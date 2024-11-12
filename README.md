@@ -15,7 +15,7 @@
 ```
 You need to replace at lines : 68 ; 184 
 "full_path_here" with your installation path of massdns.
-126 ; 190
+You need to replace at lines : 126 ; 190
 "full_path_here" with your installation path of sudomy.
 
 You need to replace at lines : 71 ; 186
