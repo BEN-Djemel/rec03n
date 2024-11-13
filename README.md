@@ -12,13 +12,13 @@
 - [subfinder](https://github.com/projectdiscovery/subfinder) - Subfinder is a subdomain discovery tool that discovers valid subdomains for websites.
 
 ## Post Installation
-```
-You need to replace at lines : 68 ; 184 
+```text
+You need to replace at lines : 39 ; 159 
 "full_path_here" with your installation path of massdns.
-You need to replace at lines : 126 ; 190
+You need to replace at lines : 96 ; 165
 "full_path_here" with your installation path of sudomy.
 
-You need to replace at lines : 71 ; 186
+You need to replace at lines : 41 ; 161
 "your_api_key_here" with your chaos api.
 ```
 You can get your chaos API key by either signing up or logging in at [cloud.projectdiscovery.io](https://cloud.projectdiscovery.io?ref=api_key)
