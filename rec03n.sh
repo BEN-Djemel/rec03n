@@ -14,10 +14,6 @@ mkdir temporaire
 fi
 i=0;
 j=0;
-k=0;
-l=0;
-m=0;
-n=0;
 o=0;
 p=0;
 q=0;
@@ -33,50 +29,24 @@ while true; do
     case $yn in
         [Yy]* ) read -p "Enter the path of your file: " monfifi
 		echo "process of crt.sh ..."
-		for crt in `cat $monfifi`
+		for mesdodo in `cat $monfifi`
 		do
 			i=`expr $i + 1`
-			`curl -s https://crt.sh/\?q\=\$crt\&output\=json | jq -r '.[].name_value' | grep -Po '(\w+\.\w+\.\w+)$' | anew >> recon/crtsh$i.txt`
+			`curl -s https://crt.sh/\?q\=\$mesdodo\&output\=json | jq -r '.[].name_value' | grep -Po '(\w+\.\w+\.\w+)$' | anew >> recon/crtsh$i.txt`
+			subfinder -d $mesdodo -all -recursive -silent -o recon/subfinder$i.txt
+			sublist3r -d $mesdodo -o recon/sublist3r$i.txt
+			findomain -q -t $mesdodo -u recon/findomain$i.txt
+			`python3 /"full_path_here"/massdns/scripts/recon.py -q -d $mesdodo -l /"full_path_here"/massdns/lists/best-dns-wordlist.txt --o recon/massdns$i.txt`
+			echo "chaos api initialisation..."
+			export PDCP_API_KEY="your_api_key_here"
+			chaos -silent -d $mesdodo -o recon/chaos$i.txt
 		done
 		#echo "process of google dorking..."
 		#for ggdorking in `cat $monfifi`
 		#do
 #		̀`curl -s https://www.google.com/search?q=site:$ggdorking | grep -oP '(?<=href=")[^"]+\.'$1'\.'$2'' | grep -oP 'q=\Khttp[^"]+' >> recon/googleDork.txt`
 		#done
-		echo "process of subfinder..."
-		for subfinding in `cat $monfifi`
-		do
-			j=`expr $j + 1`
-			subfinder -d $monfifi -all -recursive -silent -o recon/subfinder$j.txt
-		done
-		echo "process of sublist3r..."
-		for sublisting in `cat $monfifi`
-		do
-			k=`expr $k + 1`
-			sublist3r -d $sublisting -o recon/sublist3r$k.txt
-		done
-		echo "process of findomain..."
-		for finding in `cat $monfifi`
-		do
-			l=`expr $l + 1`
-			findomain -q -t $finding -u recon/findomain$l.txt
-		done
-		echo "process of massdns..."
-		for massdnsing in `cat $monfifi`
-		do
-			m=`expr $m + 1`
-			`python3 /"full_path_here"/massdns/scripts/recon.py -q -d $massdnsing -l /"full_path_here"/massdns/lists/best-dns-wordlist.txt --o recon/massdns$m.txt`
-		done
-		echo "chaos api initialisation..."
-		export PDCP_API_KEY="your_api_key_here"
-		echo "process of chaos..."
-		for chaosing in `cat $monfifi`
-		do
-			n=`expr $n + 1`
-			chaos -silent -d $chaosing -o recon/chaos$n.txt
-		done
 		echo "creation of dublons file and without dublons..."
-
 		for crtkt in `cat recon/crtsh.txt`
 		do
 			p=`expr $p + 1`
@@ -163,10 +133,15 @@ while true; do
 			amass enum -passive -norecursive -d $amassing -o temporaire/tempoamass$x.txt
 			# Filtrer les résultats pour obtenir uniquement les sous-domaines au format "www.marvel.com"
 			echo "Amass file created ! Filtered now..."
-			`grep -oP '^[^.]+\.'$amassing temporaire/tempoamass$x.txt >> amass$x.txt`
+			`grep -oP '^[^.]+\.'$amassing temporaire/tempoamass$x.txt >> recon/amass$x.txt`
 			# Supprimer les fichiers temporaires
 			#rm temporaire/tempoamass$x.txt
 			echo "new amass enum file available !"
+			for mamass in `cat recon/amass$x.txt`
+			do
+				j=`expr $j + 1`
+		        	echo $mamass >> FinAvecDoublon$j.txt
+			done
         	done
 		break;;
 	[Nn]* ) read -p "Enter a domain attack : " mondodo
@@ -271,10 +246,14 @@ while true; do
 		amass enum -passive -norecursive -d $mondodo -o temporaire/tempoamass.txt
 		# Filtrer les résultats pour obtenir uniquement les sous-domaines au format "www.marvel.com"
 		echo "Amass file created ! We filter now..."
-		`grep -oP '^[^.]+\.'$mondodo temporaire/tempoamass.txt >> amass.txt`
+		`grep -oP '^[^.]+\.'$mondodo temporaire/tempoamass.txt >> recon/amass.txt`
 		# Supprimer les fichiers temporaires
 		rm temporaire/tempoamass.txt
 		echo "new amass enum file available !"
+		for monamass in `cat recon/amass.txt`
+		do
+			echo $monamass >> FinAvecDoublon.txt
+		done
 		break;;
         * ) echo "Please answer yes or no.";;
     esac
